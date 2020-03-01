@@ -1,6 +1,9 @@
 <html>
 <head>
 <?php
+include('3B.php');
+?>
+<?php
 session_start();
 ?>
 <html>
@@ -51,15 +54,22 @@ $error="";
 $uName="";
 if(isset($_REQUEST["btnSignup"])==true)
 {
-$uName=$_REQUEST("usrName");
-$pass=$_REQUEST("Paswrd");
+$uName=$_REQUEST["usrName"];
+$pass=$_REQUEST["Paswrd"];
+$city=$_REQUEST["city"];
+$sql="insert into users(uName,pass,city,id)
+VALUES('$uName','$pass','$city')";
+if(mysqli_query($conn,$sql)==true){
+	$last_id=mysqli_insert_id($conn);
+	$msg="you are registered successfully.";
+}
+else{
+	$msg="error:".sql."<br>".mysqli_error($conn);
+	$msg="some problem has occurred";
+}
 
 }
-if($uName!="" && $pass!="admin")
-{
-    $_session{"user"}=$usrName;
-	header('loaction:welcome.php');
-}
+
 else {
     $_session{"user"}=null;
 	$error="invalid user name and password";
@@ -83,6 +93,26 @@ EMAIL:</td><td><input type="email"  name="eName" id="emailId" /><br>
 <tr><td>
 PASSWORD:</td><td><input type="password" name="paswrd" /><br>
 </td></tr>
+<tr><td>country:</td><td><select name="country">
+<option value="">--select--</option>
+<?php
+$sql="selct id,name,email from student";
+$result=mysqli_query($conn,$sql);
+$recordsFound=mysqli_num_rows($result);
+if($recordsFound >0){
+	echo $recordsFound."records are found! <br>";
+	while($rows=mysqli_fetch_assoc($result))
+	{
+		$id=$row["id"];
+		$name=$row["name"];
+		$email=$row["email"];
+		echo("<option value='$id'>$name</option>");
+		echo("email:$email<br>");
+	
+	}
+	?>
+</td></tr>
+</select>
 </table>
 <input type="submit" name="btnSubmit" value="signup" />
 </form>
