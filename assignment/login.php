@@ -1,4 +1,7 @@
 <?php
+include('3A.php');
+?>
+<?php
 session_start();
 ?>
 <html>
@@ -61,22 +64,26 @@ $error="";
 $uName="";
 if(isset($_REQUEST["btnSubmit"])==true)
 {
-$uName=$_REQUEST("uName");
-$pass=$_REQUEST("uPaswrd");
+$uName=$_REQUEST["uName"];
+$pass=$_REQUEST["uPaswrd"];
+$sql="select*from users login='$uname' and passwords='$paswrd'";
+$result=mysqli_num_rows($result);
+if($recordsFound==1)
+{
+	4_SESSION['USER']=$uName;
+	header('location:welcome.php');
+}
+else{
+	$error="inavlid user/password";
+}
 
 }
-if($uName!="" && $pass!="admin")
-{
-    $_session{"user"}=$uName;
-	header('loaction:welcome.php');
-}
-else {
-    $_session{"user"}=null;
-	$error="invalid user name and password";
-}
+else if(isset($_REQUEST["btnSubmit"]){
+
+})
 
 ?>
-<h1 style="color:cyan; align:center;border:solid" >login page</h1> 
+<h1 style= "color:cyan; align:center;border:solid" >login page</h1> 
 <form action="welcome.php" method="post">
 <table>
 <tr><td>
