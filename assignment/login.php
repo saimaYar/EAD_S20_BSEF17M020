@@ -9,20 +9,50 @@ session_start();
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#btnSubmit").click(function(){
-		var usr=$("#userName").val();
-		var pas=$("#passwrd").val();
+	var data={"action":"login"};
+	var settings={
+		type:"post",
+		dataType:"json",
+		url:"api.php",
+		data:data,
+		success:function(response){
+			for(var count=0; count<response.data.length; count++)
+			{
+				var row=response.data[count];
+				var $div=$("<div class='box'>");
+				$div.append("id:"+row.id+"<br>");
+				$div.append("name:<a href='welcome.php?id="+row.id+"'>"+row.name);
+				$div.append("email:"+row.email+"<br>");
+				$(".container").append($div);
+				console.log(row);
+			}
+		},
+		error:function(err,type,httpStatus){
+			alert('error occured');
+		}
+	};
+	$.ajax(settings);
+	console.log('request sent');
+	return false;
+	
+	});
+
 		var flag=true;
 		if(usr==""){
 			flag=false;
 			alert("user name not entered");
-		}
+		};
+		$.ajax(settings);
+		console.log('request sent');
+		return false;
+		});
 		if(pas==""){
 			flag=false;
 			alert("password not entered");
 		}
 		return flag;
-		});
 });
+
 </script>
 </head>
 <body>
@@ -31,13 +61,13 @@ $error="";
 $uName="";
 if(isset($_REQUEST["btnSubmit"])==true)
 {
-$uName=$_REQUEST("userName");
-$pass=$_REQUEST("paswrd");
+$uName=$_REQUEST("uName");
+$pass=$_REQUEST("uPaswrd");
 
 }
 if($uName!="" && $pass!="admin")
 {
-    $_session{"user"}=$userName;
+    $_session{"user"}=$uName;
 	header('loaction:welcome.php');
 }
 else {
@@ -46,11 +76,11 @@ else {
 }
 
 ?>
-<h1 style="color:cyan; align:center>login page</h1> 
+<h1 style="color:cyan; align:center;border:solid" >login page</h1> 
 <form action="welcome.php" method="post">
 <table>
 <tr><td>
-USER NAME:</td><td><input type="text" name="userName" />
+USER NAME:</td><td><input type="text" name="uName" id="userId" />
 <?php if(isset($_REQUEST["btnSubmit"]) && $uName=""){
 	echo ("<span>user name is empty!</span>");
 }
@@ -58,7 +88,7 @@ USER NAME:</td><td><input type="text" name="userName" />
 <br></td>
 </tr>
 <tr><td>
-EMAIL:</td><td><input type="email"  name="eName" /><br>
+EMAIL:</td><td><input type="email"  name="eName" id="emailId" /><br>
 </td></tr>
 <tr><td>
 PASSWORD:</td><td><input type="password" name="paswrd" /><br>
