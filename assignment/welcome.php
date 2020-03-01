@@ -1,5 +1,7 @@
 <html>
-<head></head>
+<head>
+<title>welcome page</title>
+</head>
 <body>
 <?php
 session_start();
@@ -12,6 +14,7 @@ if(isset($_session{"user"})==false)
 ?>
 <h1>welcome</h1><br>
 <?php  echo $_session{"user"}; ?>
+<a href='logout.php'>click here to logout!</a>
 
 
 </body>
